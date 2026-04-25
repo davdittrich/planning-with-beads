@@ -46,13 +46,15 @@ Store research in `bd knowledge` (memories). Use `bd recall` when needed.
 
 ## Beads Agent Loop
 
-1. **ANALYZE:** Run `bd ready` + `bd prime`.
-2. **THINK:** Pick unblocked task.
-3. **CLAIM:** `bd update <id> --claim`.
-4. **EXECUTE:** Work.
-5. **LOG:** `bd comment` discovery/error.
-6. **CLOSE:** `bd update <id> --status closed`.
-7. **ITERATE:** Next task.
+1. **BOOT:** Run `scripts/init-session.sh "Goal"`.
+2. **ANALYZE:** Run `bd ready` + `bd prime`.
+3. **THINK:** Pick unblocked task.
+4. **CLAIM:** `bd update <id> --claim`.
+5. **EXECUTE:** Work.
+6. **LOG:** `bd comment` discovery/error.
+7. **CLOSE:** `bd update <id> --status closed`.
+8. **VERIFY:** Run `scripts/check-complete.sh`.
+9. **ITERATE:** Next task or end session.
 
 ---
 
@@ -63,7 +65,7 @@ Store research in `bd knowledge` (memories). Use `bd recall` when needed.
 | `task_plan.md` | `bd epic` + child tasks |
 | `findings.md` | `bd remember` (Knowledge) |
 | `progress.md` | `bd stats` + Task history |
-| `init-session.sh` | `bd init` |
+| `scripts/init-session.sh` | `bd init` |
 
 ---
 

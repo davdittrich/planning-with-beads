@@ -13,28 +13,29 @@ Planning with Beads replaces volatile file-based planning with a structured, gra
 - **Atomic Workflows**: Enforces one ticket per atomic task and immediate bug tracking.
 - **Fail Pattern Prevention**: Includes explicit rules to prevent repetitive mistakes.
 - **2-Action Rule**: Ensures every discovery is captured before it's lost from the agent's memory.
+- **Automation Scripts**: Helper scripts for session initialization and completion verification.
 
 ## Getting Started
 
-1. **Initialize Beads**:
+1. **Initialize Session**:
+   The fastest way to start is using the initialization script:
    ```bash
-   bd init
+   ./scripts/init-session.sh "Your Project Goal"
    ```
+   This initializes Beads and scaffolds an Epic with default phases (Discovery, Planning, Implementation, Verification).
 
-2. **Start a Task**:
+2. **Claim and Prime**:
+   Find an unblocked task and load context:
    ```bash
-   bd create "Feature Goal" --type epic --priority P1
-   ```
-
-3. **Decompose**:
-   ```bash
-   bd create "Phase 1: Research" --parent <epic_id>
-   ```
-
-4. **Claim and Prime**:
-   ```bash
+   bd ready
    bd update <task_id> --claim
    bd prime
+   ```
+
+3. **Verify Completion**:
+   When finished with a session or an Epic:
+   ```bash
+   ./scripts/check-complete.sh
    ```
 
 ## Manus Principles Integration
