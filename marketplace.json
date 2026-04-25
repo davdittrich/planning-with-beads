@@ -4,7 +4,7 @@
   "description": "Persistent task and knowledge management for AI agents using the Beads system. Based on Manus context engineering principles.",
   "author": "Gemini CLI",
   "license": "MIT",
-  "repository": "https://github.com/your-username/planning-with-beads",
+  "repository": "https://github.com/davdittrich/planning-with-beads",
   "keywords": [
     "claude",
     "beads",
