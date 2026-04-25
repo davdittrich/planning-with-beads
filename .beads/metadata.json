@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "planning_with_files",
+  "project_id": "f3be48e9-d11e-4dc5-af07-21b2c184270a"
+}
