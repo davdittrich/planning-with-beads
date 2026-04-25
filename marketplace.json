@@ -13,7 +13,9 @@
     "context-engineering",
     "manus",
     "productivity",
-    "task-management"
+    "task-management",
+    "skill-md",
+    "agent-skills"
   ],
   "main": "SKILL.md",
   "files": [
