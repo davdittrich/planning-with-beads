@@ -1,83 +1,66 @@
 # Beads Planning Examples
 
-## Example: Build CLI Tool
+## Example: Proper Task Creation
 
-### 1. Init Session
+### 1. Load Template
 ```bash
-./scripts/init-session.sh "Build 'spark' CLI"
-# Initializes Beads
-# Creates Epic: spark-1
-# Creates default phases (Discovery, Planning, etc.)
+cat templates/task_template.md
 ```
 
-### 2. Custom Decompose (Optional)
+### 2. Create Task with Full Body
 ```bash
-bd create "Phase 1.1: Research Argparse" --parent spark-1 --description "Look into subcommands"
-# ID: spark-1.5 (if default phases 1-4 exist)
-```
-
-### 3. Execution
-```bash
-bd update spark-1.1 --claim
-bd prime
-# (Research...)
-bd remember --topic argparse "Subcommands allow 'spark add' pattern."
-bd update spark-1.1 --status closed --reason "Research done."
-```
-
-### 4. Progress & Logging
-```bash
-bd update spark-1.3 --claim
-# (Error during implementation...)
-bd comment spark-1.3 --body "Error: ModuleNotFound 'requests'. Fix: Update requirements.txt"
-```
-
-### 5. Verify & Finish
-```bash
-./scripts/check-complete.sh spark-1
-# Returns error if spark-1.2, 1.4, etc. still open
-# Returns "ALL TASKS COMPLETE" when everything closed
-```
-
-## Example: Hermetic Ticket (New Standard)
-
-When creating a task for a sub-agent, use this level of detail in the description:
-
-```markdown
-# TASK: Summarize Research
+bd create "Research Auth Flow" --parent bd-1 --description "
+# bd-1.5: Research Auth Flow
 **Status:** READY_FOR_EXECUTION
 
 ## I. Context & Objective
-* **Objective:** Extract top 3 findings from the `discovery.log` and format as JSON.
-* **Why:** Prepare data for the executive summary phase.
-* **Reference Data:** `cat .beads/memories/topic_research.json`
-* **Philosophy:** Assume Goldfish Memory.
+* **Objective:** Map OIDC flow for the client app.
+* **Why:** Foundation for login implementation.
+* **Reference Data:** https://auth0.com/docs/flows
+* **Philosophy:** Sub-agent = Goldfish Memory.
 
 ## II. Input Specification
-* **Expected Input:** JSON array of research notes.
-* **Format:** `List[MemoryObject]`
+* **Expected Input:** OIDC Config JSON.
+* **Format:** Object.
 
 ## III. Constraints & Guards
 | Guard Type | Constraint |
 | :--- | :--- |
-| **Logic Guard** | Only include findings related to performance. |
-| **Format Guard** | Output must be valid JSON. No prose. |
-| **Boundary Guard** | Max 50 words per finding. |
+| **Logic Guard** | Must support PKCE. |
+| **Format Guard** | Output sequence diagram in Mermaid. |
 
 ## IV. Step-by-Step Logic
-1. Parse `topic_research.json`.
-2. Filter for "performance" tags.
-3. Sort by significance.
-4. Extract top 3.
+1. Read Auth0 docs.
+2. Trace /authorize call.
+3. Trace /token call.
 
 ## V. Output Schema (Strict)
-```json
+\`\`\`json
 {
-  "task_id": "spark-1.1.2",
-  "success": true,
-  "data": {
-    "findings": [{"id": 1, "text": "..."}]
-  }
+  \"flow\": \"oidc-pkce\",
+  \"endpoints\": { ... }
 }
+\`\`\`
+
+## VI. Definition of Done
+- [ ] Diagram included.
+- [ ] Schema valid.
+"
 ```
-```
+
+## Example: Multi-Agent Handoff
+
+When one agent finishes a task, it ensures the *next* task in Beads is ready with the template filled.
+
+1. **Agent A** finishes Research.
+2. **Agent A** reads `templates/task_template.md`.
+3. **Agent A** runs `bd update bd-1.2 --body "..."` to prepare implementation task for **Agent B**.
+4. **Agent B** runs `bd show bd-1.2` and has everything needed.
+
+## Example: Hermetic Ticket Checklist
+
+- [ ] I read `templates/task_template.md` this session.
+- [ ] My ticket has sections I through VI.
+- [ ] I included a `Constraints & Guards` table.
+- [ ] I defined a `Strict JSON` output schema.
+- [ ] I assume the next person to read this has **Goldfish Memory**.
