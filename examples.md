@@ -38,3 +38,46 @@ bd comment spark-1.3 --body "Error: ModuleNotFound 'requests'. Fix: Update requi
 # Returns error if spark-1.2, 1.4, etc. still open
 # Returns "ALL TASKS COMPLETE" when everything closed
 ```
+
+## Example: Hermetic Ticket (New Standard)
+
+When creating a task for a sub-agent, use this level of detail in the description:
+
+```markdown
+# TASK: Summarize Research
+**Status:** READY_FOR_EXECUTION
+
+## I. Context & Objective
+* **Objective:** Extract top 3 findings from the `discovery.log` and format as JSON.
+* **Why:** Prepare data for the executive summary phase.
+* **Reference Data:** `cat .beads/memories/topic_research.json`
+* **Philosophy:** Assume Goldfish Memory.
+
+## II. Input Specification
+* **Expected Input:** JSON array of research notes.
+* **Format:** `List[MemoryObject]`
+
+## III. Constraints & Guards
+| Guard Type | Constraint |
+| :--- | :--- |
+| **Logic Guard** | Only include findings related to performance. |
+| **Format Guard** | Output must be valid JSON. No prose. |
+| **Boundary Guard** | Max 50 words per finding. |
+
+## IV. Step-by-Step Logic
+1. Parse `topic_research.json`.
+2. Filter for "performance" tags.
+3. Sort by significance.
+4. Extract top 3.
+
+## V. Output Schema (Strict)
+```json
+{
+  "task_id": "spark-1.1.2",
+  "success": true,
+  "data": {
+    "findings": [{"id": 1, "text": "..."}]
+  }
+}
+```
+```

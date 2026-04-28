@@ -1,10 +1,10 @@
 ---
 name: planning-with-beads
-description: Use when starting complex multi-step tasks (3+ steps), research, or work spanning multiple sessions/tool calls.
+description: Use when start complex task (3+ steps), research, multi-session work.
 metadata:
   triggers: complex task, research, beads, planning, multi-step, bd, task-id, persistence, context-reset
   category: technique
-  version: 1.4.0
+  version: 1.6.1
 ---
 
 # Planning with Beads
@@ -13,81 +13,96 @@ Beads (`bd`) = structured memory on disk. Use for complex work.
 
 ## Core Rules
 
+### 0. Hermetic Tickets (MANDATORY)
+Ticket = hermetic env. Contain all logic, schema, constraints. Input A → Output B without orchestrator. Sub-agent has "Goldfish Memory".
+
 ### 1. Epic First
-Complex task? Create Beads Epic FIRST. No code without ID. Use `scripts/init-session.sh` to scaffold quickly.
+Complex task? Create Epic FIRST. No code without ID. Use `scripts/init-session.sh` scaffold fast.
 
 ### 2. Atomic Tasks
-One task = one atomic ticket. Don't bundle unrelated changes.
+One task = one atomic ticket. No bundle unrelated change.
 Found bug? Create ticket NOW. Track every deviation.
 
 ### 3. 2-Action Rule
-After 2 view/browser/search ops: save findings to Beads.
-Use `bd remember` (topic/discovery) or `bd comment` (task-specific).
+After 2 view/browser/search ops: save to Beads.
+`bd remember` (discovery) or `bd comment` (task).
 
 ### 4. Prime Before Decide
-Major decision? Run `bd prime`. Refresh context. No stale goals.
+Major decision? Run `bd prime`. Refresh context. No stale goal.
 
 ### 5. Update After Act
-Phase done? Update Beads. Log errors. Note changed files.
+Phase done? Update Beads. Log error. Note change file.
 
 ### 6. Verify Completion
-Before closing an Epic or ending a session, use `scripts/check-complete.sh` to ensure no tasks were missed.
+Close Epic? Run `scripts/check-complete.sh`. No miss task.
+
+## Ticket Architecture Standards
+
+You = TPM & Architect. Every task MUST follow `templates/task_template.md`.
+
+| Component | Purpose | Example |
+| :--- | :--- | :--- |
+| **Scope Anchor** | 1 sentence In/Out. | "CSV → JSON objects." |
+| **Context Injection** | Data, URL, file snippets. | "API: https://api.ex.com/v1" |
+| **I/O Schemas** | Strict JSON/MD struct. | "Output match schema.json." |
+| **Execution Guards** | "Do Not" list + validation. | "Guard: Neg price → null." |
+| **Definition of Done** | Self-validate checklist. | "[ ] Schema verify via ajv." |
 
 ## Command Reference
 
 | Goal | Command |
 |------|---------|
 | **Setup Session** | `scripts/init-session.sh "Goal"` |
-| Start Epic | `bd init` && `bd create --type epic` |
-| Add Task | `bd create --parent <epic_id>` |
-| Log Finding | `bd remember --topic <topic> "<content>"` |
-| Status | `bd update <task_id> --status closed --reason "..."` |
-| Log Decision | `bd comment <task_id> --body "Decision: ..."` |
+| Start Epic | `bd init && bd q "Goal" --type epic` |
+| Add Task | `bd create "Title" --parent <epic_id>` |
+| Log Finding | `bd remember "<content>"` |
+| Status | `bd close <task_id> --reason "..."` |
+| Log Decision | `bd comment <task_id> "Decision: ..."` |
 | Load Context | `bd prime` |
 | **Verify Epic** | `scripts/check-complete.sh <epic_id>` |
 
 ## Automation Scripts
 
 ### `scripts/init-session.sh "Goal"`
-Use at the start of any new complex task.
-- Initializes Beads (`bd init`) if needed.
-- Creates a top-level **Epic** for the goal.
-- Scaffolds default phases: Discovery, Planning, Implementation, Verification.
+Start new complex task.
+- Init Beads (`bd init`) if need.
+- Create Epic for goal.
+- Scaffold phases: Discovery, Planning, Implementation, Verification.
 
 ### `scripts/check-complete.sh [epic_id]`
-Use before ending a session or declaring an Epic "Done".
-- Checks for any `open`, `in_progress`, or `blocked` tasks under the Epic.
-- Exits with error (1) if tasks remain, or success (0) if all are closed.
-- Automatically finds the latest Epic if ID is omitted.
+Before end session or Epic "Done".
+- Check `open`, `in_progress`, `blocked` tasks.
+- Exit error (1) if task remain. Success (0) if all closed.
 
 ## Decision Matrix
 
 | Situation | Action | Reason |
 |-----------|--------|--------|
-| Starting new work | `init-session.sh` | Rapid scaffolding |
-| Multi-step work | Beads | Persistence > Context |
-| Multi-session | Beads | Context lost, Beads stay |
-| Visual info | `bd remember` | Screenshots don't persist |
-| Error found | `bd comment` | Track attempts, don't repeat |
-| Stale context | `bd prime` | Read actual state |
-| Finishing work | `check-complete.sh` | Ensure zero-gap completion |
+| Start new work | `init-session.sh` | Fast scaffold |
+| Multi-step | Beads | Persist > Context |
+| Multi-session | Beads | Context die, Beads stay |
+| Visual info | `bd remember` | Screenshot die |
+| Error found | `bd comment` | Track fail, no repeat |
+| Stale context | `bd prime` | Read state |
+| Finish work | `check-complete.sh` | Zero-gap done |
 
 ## Rationalization Table
 
 | Excuse | Reality |
 |--------|---------|
-| "Too small" | Small tasks grow. 3+ steps = Beads. |
-| "Updating slow" | Lose context slower. `bd prime` = 10x speed. |
-| "I remember" | You don't. 50 calls → Goal lost. |
+| "Too small" | Task grow. 3+ step = Beads. |
+| "Slow update" | Lose context slower. `bd prime` = fast. |
+| "I remember" | No you don't. 50 calls = goal lost. |
 | "Add later" | Info volatile. Save NOW. |
 
 ## Red Flags - STOP
 
-- 5+ calls, no Beads task.
-- 2+ browser ops, no `bd remember`.
+- 5+ call, no Beads task.
+- 2+ browser op, no `bd remember`.
 - Bug found, no ticket.
-- Bundle 2+ unrelated changes in one ticket.
-- Repeat failed call without log.
+- Bundle 2+ unrelated change in 1 ticket.
+- Repeat fail call without log.
+- **Missing Guard/Schema in ticket body.**
 
 ## 5-Question Reboot
 
@@ -96,7 +111,7 @@ Answer via `bd`:
 2. **Next step?** → `bd children <epic_id>`.
 3. **Goal?** → `bd show <epic_id>`.
 4. **Learned?** → `bd memories`.
-5. **Done?** → `bd stats` / `bd history`.
+5. **Done?** → `bd status` / `bd history`.
 
 ## Files & Templates
 

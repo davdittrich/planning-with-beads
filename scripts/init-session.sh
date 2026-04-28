@@ -16,10 +16,10 @@ else
 fi
 
 # Check if an epic already exists
-EXISTING_EPIC=$(bd query "type=epic" --json | jq 'length' 2>/dev/null)
+EXISTING_EPIC=$(bd query -a "type=epic" --json | jq 'length' 2>/dev/null)
 
 if [ "$EXISTING_EPIC" -eq 0 ] || [ -z "$EXISTING_EPIC" ]; then
-    ID=$(bd q create "$GOAL" --type epic --priority P1)
+    ID=$(bd q "$GOAL" --type epic --priority P1)
     echo "✓ Created Epic: $ID"
     
     # Optional: Create default phases

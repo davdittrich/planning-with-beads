@@ -8,6 +8,7 @@ Planning with Beads replaces volatile file-based planning with a structured, gra
 
 ## Key Features
 
+- **Hermetic Ticket Architecture**: Enforces execution-ready tickets with explicit scope, input/output schemas, and execution guards.
 - **Persistent Memory**: Uses Beads to store tasks, findings, and decisions on disk.
 - **Context Engineering**: Implements Manus principles like "Attention Manipulation via Recitation" using `bd prime`.
 - **Atomic Workflows**: Enforces one ticket per atomic task and immediate bug tracking.

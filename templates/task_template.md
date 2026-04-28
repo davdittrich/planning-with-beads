@@ -1,11 +1,42 @@
-# Task Template: [Step/Phase Name]
+# [TASK_ID]: [Verb] [Subject]
+**Status:** `READY_FOR_EXECUTION`
 
-## Objective
-[What needs to be achieved in this specific task]
+## I. Context & Objective
+* **Objective:** [In/Out 1 sentence].
+* **Why:** [Step goal].
+* **Reference Data:** [String, URL, snippet, JSON].
+* **Philosophy:** Sub-agent = Goldfish Memory. All info here.
 
-## Definition of Done
-- [ ] Requirement 1
-- [ ] Requirement 2
+## II. Input Specification
+* **Expected Input:** [Data type/source].
+* **Format:** [JSON, String, List].
 
-## Implementation Notes
-- 
+## III. Constraints & Guards
+| Type | Guard |
+| :--- | :--- |
+| **Logic** | [If X, return Y. No guess.] |
+| **Format** | [Strict JSON. No fluff.] |
+| **Boundary** | [Max X word. Only analyze Y.] |
+| **Tone** | [Tech, terse, no fluff.] |
+
+## IV. Step-by-Step Logic
+1. [Action 1]
+2. [Action 2]
+3. [Action 3]
+4. Check Guards.
+
+## V. Output Schema (Strict)
+Sub-agent MUST return:
+```json
+{
+  "task_id": "[ID]",
+  "success": bool,
+  "data": { "key": "val" },
+  "error_log": "null | msg"
+}
+```
+
+## VI. Definition of Done
+- [ ] Logic match Guard.
+- [ ] Output match Schema.
+- [ ] No hallucination.

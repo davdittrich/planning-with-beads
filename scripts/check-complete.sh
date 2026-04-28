@@ -7,7 +7,7 @@ EPIC_ID="$1"
 
 if [ -z "$EPIC_ID" ]; then
     # Try to find the latest epic if none provided
-    EPIC_ID=$(bd query "type=epic" --json | jq -r '.[-1].id' 2>/dev/null)
+    EPIC_ID=$(bd query -a "type=epic" --json | jq -r '.[-1].id' 2>/dev/null)
 fi
 
 if [ -z "$EPIC_ID" ] || [ "$EPIC_ID" == "null" ]; then
