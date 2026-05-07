@@ -55,7 +55,7 @@ You = TPM & Architect. Every task MUST follow the 6 sections in `templates/task_
 | **II. Input** | Source and Format. | Mandatory |
 | **III. Guards** | Logic, Format, Boundary. | Mandatory |
 | **IV. Logic** | Numbered execution steps. | Mandatory |
-| **V. Schema** | **Strict JSON block.** | Mandatory |
+| **V. Schema** | **Strict TOON block.** | Mandatory |
 | **VI. DoD** | Verification checklist. | Mandatory |
 
 ## Command Reference

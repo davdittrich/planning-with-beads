@@ -4,7 +4,7 @@
 ## I. Context & Objective
 * **Objective:** [In/Out 1 sentence].
 * **Why:** [Step goal].
-* **Reference Data:** [String, URL, snippet, JSON].
+* **Reference Data:** [String, URL, snippet, TOON].
 * **Philosophy:** Sub-agent = Goldfish Memory. All info here.
 
 ## II. Input Specification
@@ -15,7 +15,7 @@
 | Type | Guard |
 | :--- | :--- |
 | **Logic** | [If X, return Y. No guess.] |
-| **Format** | [Strict JSON. No fluff.] |
+| **Format** | [Strict TOON. No fluff.] |
 | **Boundary** | [Max X word. Only analyze Y.] |
 | **Tone** | [Tech, terse, no fluff.] |
 
@@ -27,14 +27,15 @@
 
 ## V. Output Schema (Strict)
 Sub-agent MUST return:
-```json
+```toon
 {
-  "task_id": "[ID]",
-  "success": bool,
-  "data": { "key": "val" },
-  "error_log": "null | msg"
-}
-```
+  task_id "[ID]"
+  success bool
+  data {
+    key "val"
+  }
+  error_log "null | msg"
+}```
 
 ## VI. Definition of Done
 - [ ] Logic match Guard.
