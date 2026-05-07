@@ -9,7 +9,7 @@
 
 ## II. Input Specification
 * **Expected Input:** [Data type/source].
-* **Format:** [JSON, String, List].
+* **Format:** [TOON, String, List].
 
 ## III. Constraints & Guards
 | Type | Guard |
@@ -28,14 +28,12 @@
 ## V. Output Schema (Strict)
 Sub-agent MUST return:
 ```toon
-{
-  task_id "[ID]"
-  success bool
-  data {
-    key "val"
-  }
-  error_log "null | msg"
-}```
+task_id: [ID]
+success: bool
+data:
+  key: value
+error_log: null | msg
+```
 
 ## VI. Definition of Done
 - [ ] Logic match Guard.
