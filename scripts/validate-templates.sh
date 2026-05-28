@@ -9,7 +9,7 @@ if [ -z "$BEAD_ID" ]; then
     exit 1
 fi
 
-BODY=$(bd show "$BEAD_ID" --json | jq -r '.description')
+BODY=$(bd show "$BEAD_ID" --json | jq -r '.[0].description')
 
 REQUIRED_SECTIONS=(
     "I. Context & Objective"
