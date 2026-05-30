@@ -5,7 +5,7 @@ status: active
 metadata:
   triggers: ticket, bug, complex task, research, beads, planning, multi-step, bd, task-id, persistence, context-reset, github issue, pr description, bug report, draft ticket, write pr, format issue
   category: technique
-  version: 1.8.0
+  version: 1.9.0
 ---
 
 # Planning with Beads
@@ -24,12 +24,21 @@ Pick structure by audience. NEVER mix styles in one ticket.
 
 Conflict default: internal Hermetic protocol wins.
 
-## 🛑 MANDATORY: Template Protocol
-**You MUST read the template files before every `bd create` or `bd update` call.**
-- Tasks: `templates/task_template.md`
-- Epics: `templates/epic_template.md`
+## 🛑 MANDATORY: Create → Validate → Fix Loop
 
-**Why?** Sub-agents have "Goldfish Memory". They lose context every ~50 turns. The **Hermetic Ticket** is the only way to ensure they have the logic, schema, and constraints needed to succeed without asking for help.
+**No internal ticket is "created" until `scripts/validate-templates.sh <id>` exits 0.** Hard gate, not advice. A terse one-paragraph blob is an automatic FAIL — the standard is non-negotiable.
+
+Run this loop for EVERY `bd create` / `bd update` of an internal task or epic:
+
+1. **Read the template.** `templates/task_template.md` (task) or `templates/epic_template.md` (epic). EVERY call — "I remember it" = FAIL. Templates evolve.
+2. **Fill ALL sections verbatim.** Task = the 6 literal headers (`## I. Context & Objective` … `## VI. Definition of Done`) + a fenced ` ```toon ` schema block. Epic = the 4 headers. Every section populated with real content; no placeholders left from the template.
+3. **`bd create` / `bd update`** with that full body.
+4. **Validate immediately:** `scripts/validate-templates.sh <id>`.
+5. **FAIL or exit≠0 → STOP.** Rewrite body → `bd update <id> --description "$(...)"` → re-validate. Loop until green. Do NOT create the next ticket, announce completion, or enter plan-review-gate while any ticket is red.
+
+**Batch creates:** validate EVERY id. One red ticket = the batch is unfinished.
+
+**Why?** Sub-agents have "Goldfish Memory" — they lose context every ~50 turns. The **Hermetic Ticket** is the only way they get the logic, schema, and constraints to succeed without asking the orchestrator. The validate gate is what stops a summary-blob from masquerading as a hermetic ticket.
 
 ## Core Rules
 
@@ -54,8 +63,8 @@ Major decision? Run `bd prime`. Refresh context. No stale goal.
 Phase done? Update Beads. Log error. Note change file.
 
 ### 6. Verify Completion & Quality
+- Create/Update Task or Epic? Run the [Create → Validate → Fix Loop](#-mandatory-create--validate--fix-loop). Ticket is not done until `validate-templates.sh <id>` exits 0.
 - Close Epic? Run `scripts/check-complete.sh`.
-- Create/Update Task? Run `scripts/validate-templates.sh <id>`.
 
 ## Ticket Architecture Standards
 
@@ -127,6 +136,8 @@ GitHub issues, PR descriptions, bug reports. **SYSTEM DIRECTIVE:** STRICTLY enfo
 
 - **Mixing Hermetic and What/Why/How styles in one ticket.**
 - **Creating/Updating internal task WITHOUT reading `templates/task_template.md`.**
+- **`bd create`/`bd update` for an internal ticket NOT immediately followed by `validate-templates.sh <id>`.** Auto-violation.
+- **Proceeding (next ticket, completion claim, plan-review-gate) with any ticket where validate exits≠0.**
 - 5+ call, no Beads task.
 - 2+ browser op, no `bd remember`.
 - **Task description < 10 lines (Missing Schema/Guards).**
