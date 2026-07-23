@@ -54,7 +54,7 @@ Found bug? Create ticket NOW. Track every deviation.
 
 ### 3. 2-Action Rule
 After 2 view/browser/search ops: save to Beads.
-`bd remember` (discovery) or `bd comment` (task).
+`bd comment` (task).
 
 ### 4. Prime Before Decide
 Major decision? Run `bd prime`. Refresh context. No stale goal.
@@ -65,6 +65,9 @@ Phase done? Update Beads. Log error. Note change file.
 ### 6. Verify Completion & Quality
 - Create/Update Task or Epic? Run the [Create → Validate → Fix Loop](#-mandatory-create--validate--fix-loop). Ticket is not done until `validate-templates.sh <id>` exits 0.
 - Close Epic? Run `scripts/check-complete.sh`.
+
+### 7. Global Invariants Only (`bd remember`)
+Reserve `bd remember` strictly for permanent project-wide invariants (environment setup, architectural constraints). NEVER use `bd remember` for task research, code snippets, debug output, or transient discoveries—use `bd comments add <id>` or task descriptions instead.
 
 ## Ticket Architecture Standards
 
@@ -117,7 +120,6 @@ GitHub issues, PR descriptions, bug reports. **SYSTEM DIRECTIVE:** STRICTLY enfo
 | Start Epic | `bd create "Title" --type epic --description "$(cat templates/epic_template.md)"` |
 | Add Task | `bd create "Title" --parent <id> --description "$(cat templates/task_template.md)"` |
 | Validate | `scripts/validate-templates.sh <id>` |
-| Log Finding | `bd remember "<content>"` |
 | Load Context | `bd prime` |
 
 ## Rationalization Table
@@ -139,12 +141,12 @@ GitHub issues, PR descriptions, bug reports. **SYSTEM DIRECTIVE:** STRICTLY enfo
 - **`bd create`/`bd update` for an internal ticket NOT immediately followed by `validate-templates.sh <id>`.** Auto-violation.
 - **Proceeding (next ticket, completion claim, plan-review-gate) with any ticket where validate exits≠0.**
 - 5+ call, no Beads task.
-- 2+ browser op, no `bd remember`.
 - **Task description < 10 lines (Missing Schema/Guards).**
 - **Validation script fails.**
 - Marketing fluff in external ticket ("beautiful", "fast", "powerful").
 - Bundling multiple unrelated changes into one ticket.
 - Missing Markdown links for references (external).
+- **Using `bd remember` for task-level research, debug output, or transient findings (Use `bd comments add <id>`).**
 
 ## 5-Question Reboot
 

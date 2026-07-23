@@ -23,6 +23,16 @@ OPEN_TASKS=$(bd children "$EPIC_ID" --json | jq '[.[] | select(.status == "open"
 
 if [ "$OPEN_TASKS" -eq 0 ]; then
     echo "ALL TASKS COMPLETE"
+    
+    # Audit active beads memories to prevent context pollution
+    MEMORIES=$(bd memories 2>/dev/null || true)
+    if [ -n "$MEMORIES" ]; then
+        echo ""
+        echo "=== Active Beads Memory Audit ==="
+        echo "Note: Global memories in 'bd remember' persist across sessions and inject into prompt context post-compaction."
+        echo "Please audit memories below and run 'bd forget <key>' for any transient task memories before final closure:"
+        echo "$MEMORIES"
+    fi
     exit 0
 else
     echo "TASK NOT COMPLETE: $OPEN_TASKS tasks still open/in_progress."

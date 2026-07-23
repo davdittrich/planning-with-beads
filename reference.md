@@ -40,7 +40,7 @@ Semantic compaction. `bd compact` summarize old issues. Keep facts in knowledge 
 Built for multi-agent. Each agent (orchestrator/coder/reviewer) prime relevant subgraph.
 
 ### 3. Context Offloading
-Store research in `bd knowledge` (memories). Use `bd recall` when needed.
+Store task-level research and findings in task comments (`bd comments add <id>`) or task descriptions (`bd update`), NOT global `bd remember`. Reserve `bd remember` strictly for project-wide global invariants (e.g., repository rules, environment specs).
 
 ---
 
@@ -63,7 +63,7 @@ Store research in `bd knowledge` (memories). Use `bd recall` when needed.
 | Filesystem | Beads |
 |------------|-------|
 | `task_plan.md` | `bd epic` + child tasks |
-| `findings.md` | `bd remember` (Knowledge) |
+| `findings.md` | `bd comments add <id>` (task-scoped) / Global invariant: `bd remember` |
 | `progress.md` | `bd stats` + Task history |
 | `scripts/init-session.sh` | `bd init` |
 
