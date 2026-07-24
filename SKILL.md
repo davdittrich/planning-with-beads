@@ -12,6 +12,8 @@ metadata:
 
 Beads (`bd`) = structured memory on disk. Use for complex work.
 
+> Hermetic copy: approval-gate and no-bundling rules below also live in CLAUDE.md (always-on authoritative). Duplication is intentional (load-scope) — do not dedup.
+
 ## 🛑 Audience Router (READ FIRST)
 
 Pick structure by audience. NEVER mix styles in one ticket.
@@ -68,6 +70,9 @@ Phase done? Update Beads. Log error. Note change file.
 
 ### 7. Global Invariants Only (`bd remember`)
 Reserve `bd remember` strictly for permanent project-wide invariants (environment setup, architectural constraints). NEVER use `bd remember` for task research, code snippets, debug output, or transient discoveries—use `bd comments add <id>` or task descriptions instead.
+
+### 8. `active-plan.md` = Pointer, Not Copy
+`active-plan.md` carries ONLY a provenance header + epic/task IDs + exec order — NEVER restated ticket bodies; hermetic tickets are the sole source of WHAT/HOW. Keep the `status: in-progress` header so metaswarm recovery (orchestrated-execution:564) still fires. Recovery reload chain: active-plan.md IDs -> `bd prime --work-type recovery` + `bd show <ids>` re-derives full bodies from beads. This fills metaswarm's `:529` placeholder (WU decomposition = the ID list) — not an override of the frozen recovery reader.
 
 ## Ticket Architecture Standards
 
