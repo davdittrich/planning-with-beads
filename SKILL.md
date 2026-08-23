@@ -5,7 +5,7 @@ status: active
 metadata:
   triggers: ticket, bug, complex task, research, beads, planning, multi-step, bd, task-id, persistence, context-reset, github issue, pr description, bug report, draft ticket, write pr, format issue
   category: technique
-  version: 1.9.0
+  version: 1.9.1
 ---
 
 # Planning with Beads
@@ -31,6 +31,8 @@ Conflict default: internal self-sufficient protocol wins.
 **No internal ticket is "created" until `scripts/validate-templates.sh <id>` exits 0.** Hard gate, not advice. A terse one-paragraph blob is an automatic FAIL — the standard is non-negotiable.
 
 Run this loop for EVERY `bd create` / `bd update` of an internal task or epic:
+
+**Preserve headers mechanically:** Copy the template and replace placeholders only; never retype headers or claim template/validator drift without an exact comparison.
 
 1. **Read the template.** `templates/task_template.md` (task) or `templates/epic_template.md` (epic). EVERY call — "I remember it" = FAIL. Templates evolve.
 2. **Fill ALL sections verbatim.** Task = the 6 literal headers (`## I. Context & Objective` … `## VI. Definition of Done`) + a fenced ` ```toon ` key-value block. Epic = the 4 headers. Every section populated with real content; no placeholders left from the template.
