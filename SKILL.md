@@ -5,7 +5,7 @@ status: active
 metadata:
   triggers: ticket, bug, complex task, research, beads, planning, multi-step, bd, task-id, persistence, context-reset, github issue, pr description, bug report, draft ticket, write pr, format issue
   category: technique
-  version: 1.11.0
+  version: 1.12.0
 ---
 
 # Planning with Beads
@@ -44,7 +44,7 @@ Run this loop for EVERY `bd create` / `bd update` of an internal task or epic:
 **Batch creates:** validate EVERY id. One red ticket = the batch is unfinished.
 
 ### GSD-synced issues (exempt)
-Issues created by gsd-beads `beads-sync` are exempt from this loop and the templates. A synced issue is bound by a PLAN.md `<beads-id>` / `tracker-id="beads:<id>"`, or it is a child of a sync-created phase epic. Its body (`## Read First`, `## Action`, `## Verify`, `## Done`, …) is machine-rendered from PLAN.md. gsd-core's executor parses that body back through `task resolve-content`. NEVER hand-edit or "fix" these bodies to the 8-section format: that breaks execution. Change the PLAN.md task and re-sync. Tickets you write yourself in a GSD project still follow this loop.
+Issues created by gsd-beads `beads-sync` are exempt from this loop and the templates. A synced issue carries the `gsd-sync` label (gsd-beads ≥ 1.7.0; `validate-templates.sh` skips it automatically), or — for older unlabelled issues — is bound by a PLAN.md `<beads-id>` / `tracker-id="beads:<id>"`, or is a child of a sync-created phase epic. Its body (`## Read First`, `## Action`, `## Verify`, `## Done`, …) is machine-rendered from PLAN.md. gsd-core's executor parses that body back through `task resolve-content`. NEVER hand-edit or "fix" these bodies to the 8-section format: that breaks execution. Change the PLAN.md task and re-sync. Tickets you write yourself in a GSD project still follow this loop.
 
 **Why?** Sub-agents have ephemeral context — state resets every ~50 turns. The **Self-sufficient Ticket** is the only way they get the logic, schema, and constraints to succeed without asking the orchestrator. The validate gate stops a summary blob from masquerading as a self-sufficient ticket.
 

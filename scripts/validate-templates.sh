@@ -13,6 +13,12 @@ JSON=$(bd show "$BEAD_ID" --json)
 BODY=$(echo "$JSON" | jq -r '.[0].description')
 TYPE=$(echo "$JSON" | jq -r '.[0].issue_type')
 
+# gsd-beads beads-sync renders these bodies from PLAN.md; SKILL.md exempts them.
+if echo "$JSON" | jq -e '(.[0].labels // []) | index("gsd-sync")' >/dev/null; then
+    echo "⏭️ SKIP: $BEAD_ID is labelled gsd-sync (PLAN.md-rendered by gsd-beads); template gate exempt."
+    exit 0
+fi
+
 # Required headers come from the matching template: every "## " line not marked "(optional".
 TEMPLATE_DIR="$(dirname "$0")/../templates"
 TEMPLATE="$TEMPLATE_DIR/task_template.md"
