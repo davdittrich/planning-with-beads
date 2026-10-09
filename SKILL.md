@@ -5,7 +5,7 @@ status: active
 metadata:
   triggers: ticket, bug, complex task, research, beads, planning, multi-step, bd, task-id, persistence, context-reset, github issue, pr description, bug report, draft ticket, write pr, format issue
   category: technique
-  version: 1.10.0
+  version: 1.11.0
 ---
 
 # Planning with Beads
@@ -23,6 +23,7 @@ Pick structure by audience. NEVER mix styles in one ticket.
 | **Internal** (Beads task, sub-agent, handoff) | **Self-sufficient 8-Section** | [Ticket Architecture Standards](#ticket-architecture-standards) |
 | **External** (GitHub issue, PR description) | **What/Why/How** | [External Ticket Standards](#external-ticket-standards) |
 | **Bug report** (external) | **What/Why/How** + Repro | [External Ticket Standards](#external-ticket-standards) |
+| **GSD-synced** (created by gsd-beads `beads-sync`) | Exempt — PLAN.md is authority | [GSD-synced issues](#gsd-synced-issues-exempt) |
 
 Conflict default: internal self-sufficient protocol wins.
 
@@ -41,6 +42,9 @@ Run this loop for EVERY `bd create` / `bd update` of an internal task or epic:
 5. **FAIL or exit≠0 → STOP.** Rewrite body → `bd update <id> --description "$(...)"` → re-validate. Loop until green. Do NOT create the next ticket, announce completion, or enter plan-review-gate while any ticket is red.
 
 **Batch creates:** validate EVERY id. One red ticket = the batch is unfinished.
+
+### GSD-synced issues (exempt)
+Issues created by gsd-beads `beads-sync` are exempt from this loop and the templates. A synced issue is bound by a PLAN.md `<beads-id>` / `tracker-id="beads:<id>"`, or it is a child of a sync-created phase epic. Its body (`## Read First`, `## Action`, `## Verify`, `## Done`, …) is machine-rendered from PLAN.md. gsd-core's executor parses that body back through `task resolve-content`. NEVER hand-edit or "fix" these bodies to the 8-section format: that breaks execution. Change the PLAN.md task and re-sync. Tickets you write yourself in a GSD project still follow this loop.
 
 **Why?** Sub-agents have ephemeral context — state resets every ~50 turns. The **Self-sufficient Ticket** is the only way they get the logic, schema, and constraints to succeed without asking the orchestrator. The validate gate stops a summary blob from masquerading as a self-sufficient ticket.
 
@@ -149,6 +153,7 @@ GitHub issues, PR descriptions, bug reports. **SYSTEM DIRECTIVE:** STRICTLY enfo
 - **`bd create`/`bd update` for an internal ticket NOT immediately followed by `validate-templates.sh <id>`.** Auto-violation.
 - **Proceeding (next ticket, completion claim, plan-review-gate) with any ticket where validate exits≠0.**
 - 5+ call, no Beads task.
+- **Rewriting a GSD-synced issue body to the 8-section template.**
 - **Task description < 10 lines (Missing Constraints/Verification).**
 - **Validation script fails.**
 - Marketing fluff in external ticket ("beautiful", "fast", "powerful").
