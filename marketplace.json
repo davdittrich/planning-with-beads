@@ -1,6 +1,6 @@
 {
   "name": "planning-with-beads",
-  "version": "1.9.1",
+  "version": "1.12.0",
   "description": "Persistent task and knowledge management for AI agents using the Beads system. Based on Manus context engineering principles.",
   "author": "Dennis Alexis Valin Dittrich",
   "license": "MIT",
