@@ -1,14 +1,20 @@
 # Epic: [Goal Name]
 
-## Goal
-[1 sentence objective]
+## 1. Goal
+[Core outcome. 1 sentence.]
 
-## Success Criteria
-- [ ] Criteria 1
-- [ ] Criteria 2
+## 2. Context
+[Project state, inputs, why now. Child-task handoff order.]
 
-## Context & Background
-[Project North Star. Global constraint.]
+## 3. Constraints
+[Global boundaries every child inherits. Ruled-out alternatives.]
 
-## Sub-Agent Strategy
-[Task handoff. Global Guards.]
+## 4. Tools
+[Allowed or preferred tools / libraries / APIs.]
+
+## 7. Verification
+[How epic-level outcome is proven: integration test, command, check.]
+
+## 8. Definition of done
+- [ ] [Acceptance criterion]
+- [ ] All child tasks closed; `scripts/check-complete.sh` passes.

@@ -5,7 +5,7 @@ status: active
 metadata:
   triggers: ticket, bug, complex task, research, beads, planning, multi-step, bd, task-id, persistence, context-reset, github issue, pr description, bug report, draft ticket, write pr, format issue
   category: technique
-  version: 1.9.1
+  version: 1.10.0
 ---
 
 # Planning with Beads
@@ -20,7 +20,7 @@ Pick structure by audience. NEVER mix styles in one ticket.
 
 | Audience | Structure | Section |
 | :--- | :--- | :--- |
-| **Internal** (Beads task, sub-agent, handoff) | **Self-sufficient 6-Section** | [Ticket Architecture Standards](#ticket-architecture-standards) |
+| **Internal** (Beads task, sub-agent, handoff) | **Self-sufficient 8-Section** | [Ticket Architecture Standards](#ticket-architecture-standards) |
 | **External** (GitHub issue, PR description) | **What/Why/How** | [External Ticket Standards](#external-ticket-standards) |
 | **Bug report** (external) | **What/Why/How** + Repro | [External Ticket Standards](#external-ticket-standards) |
 
@@ -35,7 +35,7 @@ Run this loop for EVERY `bd create` / `bd update` of an internal task or epic:
 **Preserve headers mechanically:** Copy the template and replace placeholders only; never retype headers or claim template/validator drift without an exact comparison.
 
 1. **Read the template.** `templates/task_template.md` (task) or `templates/epic_template.md` (epic). EVERY call — "I remember it" = FAIL. Templates evolve.
-2. **Fill ALL sections verbatim.** Task = the 6 literal headers (`## I. Context & Objective` … `## VI. Definition of Done`) + a fenced ` ```toon ` key-value block. Epic = the 4 headers. Every section populated with real content; no placeholders left from the template.
+2. **Fill ALL sections verbatim.** Task and epic = the 6 mandatory headers (`## 1. Goal`, `## 2. Context`, `## 3. Constraints`, `## 4. Tools`, `## 7. Verification`, `## 8. Definition of done`). Optional `## 5. Logic` / `## 6. Schema` (fenced ` ```toon ` block): keep when useful, else delete. Every section populated with real content; no placeholders left from the template.
 3. **`bd create` / `bd update`** with that full body.
 4. **Validate immediately:** `scripts/validate-templates.sh <id>`.
 5. **FAIL or exit≠0 → STOP.** Rewrite body → `bd update <id> --description "$(...)"` → re-validate. Loop until green. Do NOT create the next ticket, announce completion, or enter plan-review-gate while any ticket is red.
@@ -77,16 +77,18 @@ Reserve `bd remember` strictly for permanent project-wide rules (environment set
 
 ## Ticket Architecture Standards
 
-Internal tickets only. You = TPM & Architect. Every task MUST follow the 6 sections in `templates/task_template.md`.
+Internal tickets only. You = TPM & Architect. Every task MUST follow the 8 sections (6 mandatory) in `templates/task_template.md`.
 
 | Section | Content | Requirement |
 | :--- | :--- | :--- |
-| **I. Objective** | 1 sentence In/Out. | Mandatory |
-| **II. Input** | Source and Format. | Mandatory |
-| **III. Guards** | Logic, Format, Boundary. | Mandatory |
-| **IV. Logic** | Numbered execution steps. | Mandatory |
-| **V. Schema** | **Strict key-value block.** | Mandatory |
-| **VI. DoD** | Verification checklist. | Mandatory |
+| **1. Goal** | [Core Outcome / Mission] 1 sentence In/Out. | Mandatory |
+| **2. Context**| [Relevant Context / State / Inputs] Source and Format. | Mandatory |
+| **3. Constraints**| [Hard Boundaries and Hacks/Alternatives to Avoid] Logic, Format, Boundary. | Mandatory |
+| **4. Tools** | [Allowed or Preferred Tools / Libraries / APIs] | Mandatory |
+| **5. Logic** | Numbered execution steps. | Optional |
+| **6. Schema** | Strict key-value block. | Optional |
+| **7. Verification** | [Spy/Mock/Test Strategy for Internal Logic] | Mandatory |
+| **8. Definition of done** | [Acceptance Criteria / Deliverables] Verification checklist. | Mandatory |
 
 ## External Ticket Standards
 
@@ -137,8 +139,8 @@ GitHub issues, PR descriptions, bug reports. **SYSTEM DIRECTIVE:** STRICTLY enfo
 | "Summary is enough" | **FAIL.** Sub-agent needs full context. READ template. |
 | "I remember" | No you don't. Context compaction will eat your goals. |
 | "External, skip Beads" | Plan still gated on `planning-with-beads`. |
-| Internal task → What/Why/How | **WRONG.** Internal = Self-sufficient 6-Section. |
-| External issue → 6-Section | **WRONG.** External = What/Why/How. |
+| Internal task → What/Why/How | **WRONG.** Internal = Self-sufficient 8-Section. |
+| External issue → 8-Section | **WRONG.** External = What/Why/How. |
 
 ## Red Flags - STOP
 
@@ -147,7 +149,7 @@ GitHub issues, PR descriptions, bug reports. **SYSTEM DIRECTIVE:** STRICTLY enfo
 - **`bd create`/`bd update` for an internal ticket NOT immediately followed by `validate-templates.sh <id>`.** Auto-violation.
 - **Proceeding (next ticket, completion claim, plan-review-gate) with any ticket where validate exits≠0.**
 - 5+ call, no Beads task.
-- **Task description < 10 lines (Missing Schema/Guards).**
+- **Task description < 10 lines (Missing Constraints/Verification).**
 - **Validation script fails.**
 - Marketing fluff in external ticket ("beautiful", "fast", "powerful").
 - Bundling multiple unrelated changes into one ticket.

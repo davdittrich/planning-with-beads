@@ -1,32 +1,29 @@
 # [TASK_ID]: [Verb] [Subject]
 **Status:** `READY_FOR_EXECUTION`
 
-## I. Context & Objective
-* **Objective:** [In/Out 1 sentence].
-* **Why:** [Step goal].
-* **Reference Data:** [String, URL, snippet, TOON].
-* **Philosophy:** Sub-agent = Goldfish Memory. All info here.
+## 1. Goal
+[Core outcome. 1 sentence: input -> output.]
 
-## II. Input Specification
-* **Expected Input:** [Data type/source].
-* **Format:** [TOON, String, List].
+## 2. Context
+* **Why:** [Parent goal this step serves.]
+* **State:** [Current state of code/data; file:line refs.]
+* **Inputs:** [Source + format: path, URL, snippet, TOON.]
+* Reader has no prior context. Everything needed is here.
 
-## III. Constraints & Guards
-| Type | Guard |
-| :--- | :--- |
-| **Logic** | [If X, return Y. No guess.] |
-| **Format** | [Strict TOON. No fluff.] |
-| **Boundary** | [Max X word. Only analyze Y.] |
-| **Tone** | [Tech, terse, no fluff.] |
+## 3. Constraints
+* **Must:** [Hard boundary: scope, format, limits.]
+* **Avoid:** [Hack/alternative ruled out + why.]
+* **Lock:** `[Task] [Mechanism] ! [Forbidden]`
 
-## IV. Step-by-Step Logic
-1. [Action 1]
-2. [Action 2]
-3. [Action 3]
-4. Check Guards.
+## 4. Tools
+[Allowed or preferred tools / libraries / APIs. Forbidden ones go in 3.]
 
-## V. Output Schema (Strict)
-Sub-agent MUST return:
+## 5. Logic (optional — delete if unused)
+1. [Action]
+2. [Action]
+
+## 6. Schema (optional — delete if unused)
+Return:
 ```toon
 task_id: [ID]
 success: bool
@@ -35,7 +32,9 @@ data:
 error_log: null | msg
 ```
 
-## VI. Definition of Done
-- [ ] Logic match Guard.
-- [ ] Output match Schema.
-- [ ] No hallucination.
+## 7. Verification
+[Spy/mock/test strategy proving the internal logic. Exact command + expected result.]
+
+## 8. Definition of done
+- [ ] [Acceptance criterion / deliverable]
+- [ ] [Verification in 7 passes]
