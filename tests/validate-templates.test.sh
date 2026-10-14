@@ -39,4 +39,9 @@ check "near-miss label still validated"     1 "MISSING: ## 1. Goal" "$OLD" '["gs
 check "unrelated label still validated"     1 "MISSING: ## 1. Goal" "$OLD" '["area-x"]'
 check "null labels still validated"         1 "MISSING: ## 1. Goal" "$OLD" 'null'
 
+sv=$(sed -n 's/^  version: *//p' "$ROOT/SKILL.md" | head -1)
+mv=$(jq -r .version "$ROOT/marketplace.json")
+if [ -n "$sv" ] && [ "$sv" = "$mv" ]; then echo "PASS: SKILL.md and marketplace.json versions agree ($sv)"
+else echo "FAIL: version drift (SKILL.md=$sv, marketplace.json=$mv)"; FAIL=$((FAIL + 1)); fi
+
 [ "$FAIL" -eq 0 ] && echo "ALL PASS" || { echo "$FAIL FAILED"; exit 1; }

@@ -1,11 +1,11 @@
 ---
-name: planning-with-beads
+name: "planning-with-beads"
 description: Use when writing any ticket, issue, PR description, or bug report. Mandatory when starting complex task (3+ steps), research, multi-session work, or any multi-agent handoff.
 status: active
 metadata:
   triggers: ticket, bug, complex task, research, beads, planning, multi-step, bd, task-id, persistence, context-reset, github issue, pr description, bug report, draft ticket, write pr, format issue
   category: technique
-  version: 1.12.0
+  version: 1.13.0
 ---
 
 # Planning with Beads
@@ -78,6 +78,12 @@ Reserve `bd remember` strictly for permanent project-wide rules (environment set
 
 ### 8. `active-plan.md` = ID Reference, Not Duplicate Text
 `active-plan.md` carries ONLY a provenance header + epic/task IDs + exec order — NEVER restated ticket bodies; self-sufficient tickets are the sole source of WHAT/HOW. Keep the `status: in-progress` header so metaswarm recovery (orchestrated-execution:564) still fires. Recovery reload chain: active-plan.md IDs -> `bd prime --work-type recovery` + `bd show <ids>` re-derives full bodies from beads. This fills metaswarm's `:529` placeholder (WU decomposition = the ID list) — not an override of the frozen recovery reader.
+
+### 9. Ticket Placement
+A ticket belongs in the tracker of whoever can act on it. Defect in code owned by another repo: file it in that repo's issue tracker using its template. The local tracker holds only work on local code or the local fork.
+
+### 10. Version Surfaces
+SKILL.md `version:` and `marketplace.json` `version` change together; `tests/validate-templates.test.sh` fails when they differ.
 
 ## Ticket Architecture Standards
 
