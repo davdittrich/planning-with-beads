@@ -5,7 +5,7 @@ status: active
 metadata:
   triggers: ticket, bug, complex task, research, beads, planning, multi-step, bd, task-id, persistence, context-reset, github issue, pr description, bug report, draft ticket, write pr, format issue
   category: technique
-  version: 1.13.0
+  version: 1.14.0
 ---
 
 # Planning with Beads
@@ -80,10 +80,13 @@ Reserve `bd remember` strictly for permanent project-wide rules (environment set
 `active-plan.md` carries ONLY a provenance header + epic/task IDs + exec order — NEVER restated ticket bodies; self-sufficient tickets are the sole source of WHAT/HOW. Keep the `status: in-progress` header so metaswarm recovery (orchestrated-execution:564) still fires. Recovery reload chain: active-plan.md IDs -> `bd prime --work-type recovery` + `bd show <ids>` re-derives full bodies from beads. This fills metaswarm's `:529` placeholder (WU decomposition = the ID list) — not an override of the frozen recovery reader.
 
 ### 9. Ticket Placement
-A ticket belongs in the tracker of whoever can act on it. Defect in code owned by another repo: file it in that repo's issue tracker using its template. The local tracker holds only work on local code or the local fork.
+A ticket belongs in the tracker of whoever can act on it. Defect in code owned by another repo: file it in that repo's issue tracker using its template. The local tracker holds only work on local code or the local fork. One kind of work has one named tracker, named in the project's instruction file; a second store for the same work is migrated, not kept. At Epic close, list the open tickets of that tracker that name the same artefact: work outside the Epic stays visible.
 
 ### 10. Version Surfaces
 SKILL.md `version:` and `marketplace.json` `version` change together; `tests/validate-templates.test.sh` fails when they differ.
+
+### 11. Terminal Definition of Done
+Section 8 is a predicate a script can test, and it names the artefact that satisfies it: a PR number and its push, an upstream issue number, or a recorded ruling. A done-condition the ticket author cannot close from the ticket's own text ("left open", "listed for parent", "awaiting ruling", "user decision") is unfinished work handed to the owner. A ticket whose only purpose is to record a ruling is closed at creation, with the ruling in the close reason. A finding left unfixed gets a fix or an upstream issue; the ticket's done-when is that issue's number existing. Check the rendered body for truncated fragments before `bd create`. Carry the PR or issue ref in `external_ref`.
 
 ## Ticket Architecture Standards
 
